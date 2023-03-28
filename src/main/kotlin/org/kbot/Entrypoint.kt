@@ -10,12 +10,16 @@ import org.javacord.api.entity.message.embed.EmbedBuilder
 import org.javacord.api.entity.user.UserStatus
 import org.javacord.api.interaction.SlashCommand
 import org.javacord.api.interaction.SlashCommandOption
+import org.json.JSONArray
+import org.json.JSONObject
 import org.kbot.command.Command
 import org.kbot.util.getOption
 import org.kbot.util.randomColour
 import org.kbot.util.string
 import java.awt.Color
 import java.io.File
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 /**
  * @author surge
@@ -66,6 +70,16 @@ object Entrypoint {
                     .setDescription(command?.description ?: "")
                     .setColor(if (command != null) randomColour() else Color.RED)
                 )
+                .setFlags(MessageFlag.EPHEMERAL)
+                .respond()
+        }
+
+        Command("country", "generates a country") {
+            val json = JSONArray(this.javaClass.getResourceAsStream("/countries.json")!!.reader().readText())
+
+            it.interaction
+                .createImmediateResponder()
+                .setContent(json.getJSONObject(Random.nextInt(json.length())).getString("name"))
                 .setFlags(MessageFlag.EPHEMERAL)
                 .respond()
         }
