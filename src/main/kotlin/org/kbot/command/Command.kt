@@ -1,6 +1,7 @@
 package org.kbot.command
 
 import org.javacord.api.event.interaction.SlashCommandCreateEvent
+import org.javacord.api.interaction.SlashCommandOption
 import org.kbot.Entrypoint
 
 /**
@@ -11,7 +12,7 @@ import org.kbot.Entrypoint
  * @author surge
  * @since 28/03/2023
  */
-class Command(val name: String, val description: String, val action: (SlashCommandCreateEvent) -> Unit) {
+class Command(val name: String, val description: String, val arguments: List<SlashCommandOption> = listOf(), val action: (SlashCommandCreateEvent) -> Unit) {
 
     init {
         // register to client-side command list

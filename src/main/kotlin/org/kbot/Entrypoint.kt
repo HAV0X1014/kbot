@@ -4,9 +4,17 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.javacord.api.DiscordApi
 import org.javacord.api.DiscordApiBuilder
+import org.javacord.api.entity.activity.ActivityType
 import org.javacord.api.entity.message.MessageFlag
+import org.javacord.api.entity.message.embed.EmbedBuilder
+import org.javacord.api.entity.user.UserStatus
 import org.javacord.api.interaction.SlashCommand
+import org.javacord.api.interaction.SlashCommandOption
 import org.kbot.command.Command
+import org.kbot.util.getOption
+import org.kbot.util.randomColour
+import org.kbot.util.string
+import java.awt.Color
 import java.io.File
 
 /**
@@ -37,12 +45,27 @@ object Entrypoint {
 
         logger.info("Successfully logged in as '${bot.yourself.name}'")
 
-        Command("ping", "holy FUCK a ping command?!") {
+        Command("ping", "holy FUCK a ping command?! pretty nifty i would say") {
             // we can use `it` as a way to reference the `SlashCommandCreateEvent`
             // pretty nifty i would say
             it.interaction
                 .createImmediateResponder()
                 .setContent("pohng?!")
+                .setFlags(MessageFlag.EPHEMERAL)
+                .respond()
+        }
+
+        Command("help", "helps somebody somewhere in the world", listOf(SlashCommandOption.createStringOption("command", "the command to help?", true))) {
+            // find first command with that name
+            val command = this.commands.firstOrNull { command -> command.name == it.getOption("command").string() }
+
+            it.interaction
+                .createImmediateResponder()
+                .addEmbed(EmbedBuilder()
+                    .setTitle(command?.name ?: "Command not found!")
+                    .setDescription(command?.description ?: "")
+                    .setColor(if (command != null) randomColour() else Color.RED)
+                )
                 .setFlags(MessageFlag.EPHEMERAL)
                 .respond()
         }
@@ -65,6 +88,9 @@ object Entrypoint {
      */
     fun register(command: Command) {
         SlashCommand.with(command.name, command.description)
+            .also {
+                command.arguments.forEach(it::addOption)
+            }
             .createGlobal(this.bot)
             .join()
 
