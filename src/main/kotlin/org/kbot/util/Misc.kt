@@ -1,5 +1,6 @@
 package org.kbot.util
 
+import org.javacord.api.entity.Attachment
 import org.javacord.api.event.interaction.SlashCommandCreateEvent
 import org.javacord.api.interaction.SlashCommandInteractionOption
 import java.awt.Color
@@ -17,6 +18,13 @@ fun SlashCommandCreateEvent.getOption(name: String): SlashCommandInteractionOpti
  */
 fun SlashCommandInteractionOption.string(): String {
     return this.stringValue.get()
+}
+
+/**
+ * Gets the [Attachment] value of a [SlashCommandInteractionOption]
+ */
+fun SlashCommandInteractionOption.attachment(): Attachment {
+    return this.attachmentValue.get()
 }
 
 /**

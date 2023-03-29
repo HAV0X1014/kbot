@@ -12,7 +12,7 @@ import org.kbot.Entrypoint
  * @author surge
  * @since 28/03/2023
  */
-class Command(val name: String, val description: String, val arguments: List<SlashCommandOption> = listOf(), val action: (SlashCommandCreateEvent) -> Unit) {
+abstract class Command(val name: String, val description: String, val arguments: List<SlashCommandOption> = listOf()) {
 
     init {
         // register to client-side command list
@@ -22,9 +22,6 @@ class Command(val name: String, val description: String, val arguments: List<Sla
     /**
      * Executes this command
      */
-    fun execute(event: SlashCommandCreateEvent) {
-        Entrypoint.logger.info("Executing '$name'")
-        this.action(event)
-    }
+    abstract fun execute(event: SlashCommandCreateEvent)
 
 }
