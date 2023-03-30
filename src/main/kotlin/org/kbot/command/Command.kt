@@ -7,7 +7,7 @@ import org.kbot.Entrypoint
 /**
  * @param name The name of this command, exactly what it would be used as, e.g. /ping
  * @param description The description of this command
- * @param action The code that will be called when this command is executed
+ * @param arguments A list of arguments that the commands needs
  *
  * @author surge
  * @since 28/03/2023

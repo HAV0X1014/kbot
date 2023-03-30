@@ -6,6 +6,7 @@ import org.javacord.api.DiscordApi
 import org.javacord.api.DiscordApiBuilder
 import org.javacord.api.entity.message.MessageBuilder
 import org.javacord.api.entity.message.MessageFlag
+import org.javacord.api.entity.message.component.HighLevelComponent
 import org.javacord.api.entity.message.embed.EmbedBuilder
 import org.javacord.api.event.interaction.SlashCommandCreateEvent
 import org.javacord.api.interaction.SlashCommand
@@ -67,7 +68,7 @@ object Entrypoint {
 
             override fun execute(event: SlashCommandCreateEvent) {
                 // find first command with that name
-                val command = commands.firstOrNull { command -> command.name == event.getOption("command").string() }
+                val command = commands.firstOrNull { command -> command.name == event.getOption("command")!!.string() }
 
                 event.interaction
                     .createImmediateResponder()
@@ -101,7 +102,7 @@ object Entrypoint {
             SlashCommandOption.createAttachmentOption("config", "the config (must be .zip)", true)
         )) {
             override fun execute(event: SlashCommandCreateEvent) {
-                val attachment = event.getOption("config").attachment()
+                val attachment = event.getOption("config")!!.attachment()
 
                 if (!attachment.fileName.endsWith(".zip")) {
                     event.interaction
@@ -121,7 +122,7 @@ object Entrypoint {
 
                 runCatching {
                     attachment.url.openStream().use {
-                        Files.copy(it, Paths.get(directory.resolve("${event.getOption("name").string()}.zip").path), StandardCopyOption.REPLACE_EXISTING)
+                        Files.copy(it, Paths.get(directory.resolve("${event.getOption("name")!!.string()}.zip").path), StandardCopyOption.REPLACE_EXISTING)
                     }
                 }.onSuccess {
                     event.interaction
@@ -147,14 +148,14 @@ object Entrypoint {
         )) {
 
             override fun execute(event: SlashCommandCreateEvent) {
-                val name = event.getOption("author").string()
+                val name = event.getOption("author")!!.string()
 
-                val file = File("configs/$name/${event.getOption("name").string()}.zip")
+                val file = File("configs/$name/${event.getOption("name")!!.string()}.zip")
 
                 if (!file.exists()) {
                     event.interaction
                         .createImmediateResponder()
-                        .setContent("Config with name '${event.getOption("name").string()}' (by '$name') was not found!")
+                        .setContent("https://cdn.discordapp.com/attachments/618100326095912961/1090037303226929225/20230325_235735.jpg")
                         .setFlags(MessageFlag.EPHEMERAL)
                         .respond()
 
@@ -169,7 +170,7 @@ object Entrypoint {
 
                 MessageBuilder()
                     .addAttachment(file)
-                    .setContent("${event.slashCommandInteraction.user.discriminatedName} requested $name's '${event.getOption("name").string()}' config, here it is!")
+                    .setContent("${event.slashCommandInteraction.user.discriminatedName} requested $name's '${event.getOption("name")!!.string()}' config, here it is!")
                     .send(event.interaction.channel.get())
             }
         }

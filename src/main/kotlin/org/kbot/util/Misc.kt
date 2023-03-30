@@ -4,13 +4,14 @@ import org.javacord.api.entity.Attachment
 import org.javacord.api.event.interaction.SlashCommandCreateEvent
 import org.javacord.api.interaction.SlashCommandInteractionOption
 import java.awt.Color
+import kotlin.jvm.optionals.getOrNull
 import kotlin.random.Random
 
 /**
  * Gets a [SlashCommandInteractionOption] from it's [name]
  */
-fun SlashCommandCreateEvent.getOption(name: String): SlashCommandInteractionOption {
-    return this.slashCommandInteraction.getOptionByName(name).get()
+fun SlashCommandCreateEvent.getOption(name: String): SlashCommandInteractionOption? {
+    return this.slashCommandInteraction.getOptionByName(name).getOrNull()
 }
 
 /**
