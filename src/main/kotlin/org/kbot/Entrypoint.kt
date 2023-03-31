@@ -1,12 +1,12 @@
 package org.kbot
 
+import me.bush.translator.Language
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.javacord.api.DiscordApi
 import org.javacord.api.DiscordApiBuilder
 import org.javacord.api.entity.message.MessageBuilder
 import org.javacord.api.entity.message.MessageFlag
-import org.javacord.api.entity.message.component.HighLevelComponent
 import org.javacord.api.entity.message.embed.EmbedBuilder
 import org.javacord.api.event.interaction.SlashCommandCreateEvent
 import org.javacord.api.interaction.SlashCommand
@@ -24,6 +24,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 import kotlin.random.Random
+import me.bush.translator.Translator
 
 /**
  * @author surge
@@ -65,7 +66,6 @@ object Entrypoint {
         }
 
         object : Command("help", "helps somebody somewhere in the world", listOf(SlashCommandOption.createStringOption("command", "the command to help?", true))) {
-
             override fun execute(event: SlashCommandCreateEvent) {
                 // find first command with that name
                 val command = commands.firstOrNull { command -> command.name == event.getOption("command")!!.string() }
@@ -84,7 +84,6 @@ object Entrypoint {
         }
 
         object : Command("country", "generates a country") {
-
             override fun execute(event: SlashCommandCreateEvent) {
                 val json = JSONArray(this.javaClass.getResourceAsStream("/countries.json")!!.reader().readText())
 
@@ -146,7 +145,6 @@ object Entrypoint {
             SlashCommandOption.createStringOption("author", "who made the config (e.g. name#0000)", true),
             SlashCommandOption.createStringOption("name", "the configs name", true)
         )) {
-
             override fun execute(event: SlashCommandCreateEvent) {
                 val name = event.getOption("author")!!.string()
 
@@ -172,6 +170,31 @@ object Entrypoint {
                     .addAttachment(file)
                     .setContent("${event.slashCommandInteraction.user.discriminatedName} requested $name's '${event.getOption("name")!!.string()}' config, here it is!")
                     .send(event.interaction.channel.get())
+            }
+        }
+
+        object : Command("translate", "translate...", arguments = listOf(
+            SlashCommandOption.createStringOption("text", "the text to translate", true),
+            SlashCommandOption.createStringOption("target-language", "what to translate to", true)
+        )) {
+            override fun execute(event: SlashCommandCreateEvent) {
+                val content: String = runCatching {
+                    Translator().translateBlocking(event.getOption("text")!!.string(), Language.valueOf(event.getOption("target-language")!!.string().uppercase())).translatedText
+                }.getOrElse {
+                    event.interaction.createImmediateResponder()
+                        .setContent("Failed to translate! Stack trace below:\n${it.stackTraceToString()}")
+                        .setFlags(MessageFlag.EPHEMERAL)
+                        .respond()
+                        .join()
+
+                    return
+                }
+
+                event.interaction.createImmediateResponder()
+                    .setContent(content)
+                    .setFlags(MessageFlag.EPHEMERAL)
+                    .respond()
+                    .join()
             }
         }
 
@@ -207,18 +230,6 @@ object Entrypoint {
      */
     fun register(command: Command) {
         logger.info("Registering command: '${command.name}'")
-
-        /* runCatching {
-            SlashCommand.with(command.name, command.description)
-            .also {
-                command.arguments.forEach(it::addOption)
-            }
-            .createGlobal(this.bot)
-            .join()
-        }.onFailure {
-            logger.error(it)
-        } */
-
         commands.add(command)
     }
 
