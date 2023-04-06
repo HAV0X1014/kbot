@@ -1,4 +1,4 @@
-package org.kbot;
+package org.kbot.FileHandlers;
 
 import java.io.*;
 
