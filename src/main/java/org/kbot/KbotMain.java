@@ -24,6 +24,7 @@ import org.kbot.UtilityCommands.Uptime;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class KbotMain {
@@ -40,10 +41,21 @@ public class KbotMain {
         //SlashCommand.with("future", "Future Config.").createGlobal(api).join();
         //SlashCommand.with("uptime", "Gets the uptime of the bot.").createGlobal(api).join();
         //SlashCommand.with("purge","Deletes the specified number of messages.", Arrays.asList(SlashCommandOption.create(SlashCommandOptionType.STRING, "Messages", "Amount of messages to delete.", true))).createGlobal(api).join();
-        SlashCommand.with("delete","Deletes the specified message by ID.", Arrays.asList(SlashCommandOption.create(SlashCommandOptionType.STRING, "MessageID", "MessageID of the message you want to delete.", true))).createGlobal(api).join();
+        //SlashCommand.with("delete","Deletes the specified message by ID.", Arrays.asList(SlashCommandOption.create(SlashCommandOptionType.STRING, "MessageID", "MessageID of the message you want to delete.", true))).createGlobal(api).join();
+        /*
+        String slashCommandID = "1092253336855646278";
+            try {
+                api.getGlobalSlashCommandById(Long.parseLong(slashCommandID)).get().delete();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+         */
 
         //slash commands
         api.addSlashCommandCreateListener(event -> {
+
             SlashCommandInteraction interaction = event.getSlashCommandInteraction();
             if (interaction.getCommandName().equals("ping")) {
                 interaction.createImmediateResponder().setContent("Pong. Plain and simple.").respond();
@@ -71,11 +83,10 @@ public class KbotMain {
 
             System.out.println(m);
 
-            if (m.startsWith("[")) {
-                System.out.println("message seen");
+            if (m.toLowerCase().contains("nigg")) {
+                mc.getChannel().sendMessage("__**come on get something original**__");
 
             }
         });
-
     }
 }
