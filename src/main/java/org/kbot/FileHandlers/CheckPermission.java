@@ -2,9 +2,7 @@ package org.kbot.FileHandlers;
 
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Role;
-import org.javacord.api.event.server.emoji.KnownCustomEmojiChangeWhitelistedRolesEvent;
 import org.javacord.api.interaction.SlashCommandInteraction;
-
 import java.io.FileNotFoundException;
 import java.util.List;
 

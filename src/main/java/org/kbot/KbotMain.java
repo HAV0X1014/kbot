@@ -17,6 +17,8 @@ import org.javacord.api.interaction.SlashCommandOptionType;
 import org.kbot.FileHandlers.CheckPermission;
 import org.kbot.FileHandlers.KbotToken;
 import org.kbot.FileHandlers.Whitelist;
+import org.kbot.FunFeatures.V0XpointChecker;
+import org.kbot.FunFeatures.V0Xpoints;
 import org.kbot.UtilityCommands.DeleteMessage;
 import org.kbot.UtilityCommands.Purge;
 import org.kbot.UtilityCommands.Uptime;
@@ -42,6 +44,7 @@ public class KbotMain {
         //SlashCommand.with("uptime", "Gets the uptime of the bot.").createGlobal(api).join();
         //SlashCommand.with("purge","Deletes the specified number of messages.", Arrays.asList(SlashCommandOption.create(SlashCommandOptionType.STRING, "Messages", "Amount of messages to delete.", true))).createGlobal(api).join();
         //SlashCommand.with("delete","Deletes the specified message by ID.", Arrays.asList(SlashCommandOption.create(SlashCommandOptionType.STRING, "MessageID", "MessageID of the message you want to delete.", true))).createGlobal(api).join();
+        SlashCommand.with("pointcheck","Check your V0Xpoints.").createGlobal(api).join();
         /*
         String slashCommandID = "1092253336855646278";
             try {
@@ -72,6 +75,10 @@ public class KbotMain {
                 DeleteMessage.deleteMessage(interaction, api);
             }
 
+            if (interaction.getCommandName().equals("pointcheck")) {
+                V0XpointChecker.pointCheck(interaction);
+            }
+
             if (interaction.getCommandName().equals("future")) {
                 interaction.createImmediateResponder().setContent("future config placeholder").setFlags(MessageFlag.EPHEMERAL).respond();
             }
@@ -79,13 +86,23 @@ public class KbotMain {
 
         api.addMessageCreateListener(mc -> {
             String m = mc.getMessageContent();
-            Server s = mc.getServer().get();
 
             System.out.println(m);
 
             if (m.toLowerCase().contains("nigg")) {
                 mc.getChannel().sendMessage("__**come on get something original**__");
+            } else {
 
+            if (m.contains("HAV0X")) {
+                int up = 1;
+                V0Xpoints.hV0Xpoints(mc, api, up);
+            } else {
+
+            if (m.toLowerCase().contains("havox")) {
+                int down = -1;
+                V0Xpoints.hV0Xpoints(mc, api, down);
+            }
+            }
             }
         });
     }

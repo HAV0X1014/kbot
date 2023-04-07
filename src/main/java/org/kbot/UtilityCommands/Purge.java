@@ -4,9 +4,6 @@ import org.javacord.api.entity.message.MessageFlag;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.interaction.SlashCommandInteraction;
 import org.kbot.FileHandlers.CheckPermission;
-import org.kbot.FileHandlers.Whitelist;
-
-import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutionException;
 
 public class Purge {
@@ -22,7 +19,7 @@ public class Purge {
             } catch (ExecutionException e) {
                 throw new RuntimeException(e);
             }
-            returnMessage = "Purged "+ deleteAmt + " messages.";
+            returnMessage = "Purged " + deleteAmt + " messages.";
         } else {
             returnMessage = "You do not have MANAGE_MESSAGES permissions, oops!";
         }

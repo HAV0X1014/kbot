@@ -13,7 +13,6 @@ import java.io.FileNotFoundException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class DeleteMessage {
     public static void deleteMessage(SlashCommandInteraction interaction, DiscordApi api) {
         String messageID = interaction.getArgumentStringValueByIndex(0).orElse("Invalid");
@@ -35,7 +34,7 @@ public class DeleteMessage {
                 interaction.createImmediateResponder().setContent("You cannot delete messages across servers!").setFlags(MessageFlag.EPHEMERAL).respond();
             }
         } else {
-            interaction.createImmediateResponder().setContent("You do not have MANAGE_MESSAGES permissions, oops!");
+            interaction.createImmediateResponder().setContent("You do not have MANAGE_MESSAGES permissions, oops!").setFlags(MessageFlag.EPHEMERAL).respond();
         }
     }
 }
