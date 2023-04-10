@@ -39,7 +39,7 @@ public class ServerInfo {
         e.addField("Server Owner :", "<@!" + ownerID + ">\nTag : ``" + ownerName + "``\nID : ``" + ownerID + "``");
         e.addField("Creation Date : ", creationDate);
         e.addField("System Channel : ", "Channel : " + systemChannelTag + "\nChannel ID : " + systemChannelID);
-        e.addField("Server Stats : ", "Members : ``" + members + "``\nRoles : ``" + roles + "``\nChannels : ``" + channels + "\nEmojis : ``" + customEmojis + "``");
+        e.addField("Server Stats : ", "Members : ``" + members + "``\nRoles : ``" + roles + "``\nChannels : ``" + channels + "``\nEmojis : ``" + customEmojis + "``");
         e.addField("Boosting : ", "Level : ``" + boost + "``\nBoosts : ``" + boostCount + "``");
         return e;
     }

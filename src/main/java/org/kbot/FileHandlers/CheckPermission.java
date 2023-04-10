@@ -8,23 +8,17 @@ import java.util.List;
 
 public class CheckPermission {
 
-    public static boolean checkPermission(SlashCommandInteraction event, PermissionType permcheck) {
-        boolean hasPerm = false;
-        List<Role> userRoles = event.getUser().getRoles(event.getServer().get());
-        String userID = event.getUser().getIdAsString();
-        for (Role role : userRoles) {
-            if (role.getPermissions().getAllowedPermission().contains(permcheck)) {
-                hasPerm = true;
-            }
-        }
+    public static boolean checkPermission(SlashCommandInteraction interaction, PermissionType permcheck) {
+        boolean hasPerm = interaction.getServer().get().hasPermission(interaction.getUser(), permcheck);
 
         try {
-            if (Whitelist.whitelisted(userID)) {
+            if (Whitelist.whitelisted(interaction.getUser().getIdAsString())) {
                 hasPerm = true;
             }
-            return hasPerm;
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+
+        return hasPerm;
     }
 }
