@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Whitelist {
     public static boolean whitelisted(String userID) throws FileNotFoundException {
         boolean isWhitelisted = false;
-        File f = new File("whitelist.txt");
+        File f = new File("ServerFiles/whitelist.txt");
         Scanner s = new Scanner(f);
         while (s.hasNextLine()) {
             String whitelistedID = s.nextLine();

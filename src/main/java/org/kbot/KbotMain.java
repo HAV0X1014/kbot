@@ -20,7 +20,7 @@ import java.util.Date;
 
 public class KbotMain {
     static boolean debugmessagelog;
-    static String token = KbotToken.read("token.txt"); //replace token.txt with the filename of the txt with your token
+    static String token = KbotToken.read("ServerFiles/token.txt"); //replace token.txt with the filename of the txt with your token
 
     public static void main(String[] args) {
         DiscordApi api = new DiscordApiBuilder().setToken(token).setIntents(Intent.MESSAGE_CONTENT, Intent.GUILD_MESSAGES).login().join();
