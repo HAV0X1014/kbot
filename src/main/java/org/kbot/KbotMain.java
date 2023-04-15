@@ -10,13 +10,13 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.interaction.*;
 import org.kbot.FileHandlers.*;
-import org.kbot.FunFeatures.*;
 import org.kbot.UtilityCommands.*;
 
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 public class KbotMain {
     static boolean debugmessagelog;
@@ -28,6 +28,7 @@ public class KbotMain {
         int startTime = (int) (System.currentTimeMillis() / 1000);
         User self = api.getYourself();
         String time = new Date().toString();
+
         api.updateActivity(ActivityType.WATCHING,"KiLAB's vids on repeat");
 
         //SlashCommand.with("ping", "Checks the functionality of this command").createGlobal(api).join();
@@ -40,14 +41,8 @@ public class KbotMain {
 
         //SlashCommand.with("future", "Future Config.").createGlobal(api).join();
 
-        //SlashCommand.with("wiki","Get a random Wikipedia article.").createGlobal(api).join();
-        //SlashCommand.with("pointcheck","Check your V0Xpoints.").createGlobal(api).join();
-        //SlashCommand.with("inspiro","Gets an \"inspirational\" post").createGlobal(api).join();
-        //SlashCommand.with("randfr","Gets a random Kemono Friends character article from Japari Library.").createGlobal(api).join();
-        //SlashCommand.with("godsays","Gets the latest word from god, courtesy of Terry A. Davis.").createGlobal(api).join();
-        //SlashCommand.with("miat","Gets an image of a Miat(a).").createGlobal(api).join();
         /*
-        String slashCommandID = "1092253336855646278";
+        String slashCommandID = "1094046846906802296";
             try {
                 api.getGlobalSlashCommandById(Long.parseLong(slashCommandID)).get().delete();
             } catch (InterruptedException e) {
@@ -55,7 +50,8 @@ public class KbotMain {
             } catch (ExecutionException e) {
                 throw new RuntimeException(e);
             }
-         */
+        */
+
 
         //slash commands
         api.addSlashCommandCreateListener(event -> {
@@ -89,40 +85,6 @@ public class KbotMain {
                 interaction.createImmediateResponder().setContent(SetLogChannel.setlogchannel(interaction)).respond();
             }
 
-            if (interaction.getCommandName().equals("pointcheck")) {
-                V0XpointChecker.pointCheck(interaction);
-            }
-
-            if (interaction.getCommandName().equals("wiki")) {
-                interaction.respondLater().thenAccept(interactionOriginalResponseUpdater -> {
-                    interactionOriginalResponseUpdater.setContent(Wikipedia.randomArticle()).update();
-                });
-            }
-
-            if (interaction.getCommandName().equals("miat")) {
-                interaction.respondLater().thenAccept(interactionOriginalResponseUpdater -> {
-                    interactionOriginalResponseUpdater.setContent("https://github.com/balls99dotexe/images/blob/main/miatas/miata" + (int) Math.floor(1 + Math.random() * 13) + ".png?raw=true").update();
-                });
-            }
-
-            if (interaction.getCommandName().equals("inspiro")) {
-                interaction.respondLater().thenAccept(interactionOriginalResponseUpdater -> {
-                    interactionOriginalResponseUpdater.setContent(Inspiro.inspiro()).update();
-                });
-            }
-
-            if (interaction.getCommandName().equals("randfr")) {
-               interaction.respondLater().thenAccept(interactionOriginalResponseUpdater -> {
-                   interactionOriginalResponseUpdater.setContent(RandFr.randomFriend()).update();
-               });
-            }
-
-            if (interaction.getCommandName().equals("godsays")) {
-                interaction.respondLater().thenAccept(interactionOriginalResponseUpdater -> {
-                    interactionOriginalResponseUpdater.setContent(Godsays.godSays()).update();
-                });
-            }
-
             if (interaction.getCommandName().equals("future")) {
                 interaction.createImmediateResponder().setContent("future config placeholder").setFlags(MessageFlag.EPHEMERAL).respond();
             }
@@ -143,25 +105,8 @@ public class KbotMain {
                     }
                 }
             }
-            System.out.println(m);
 
-            if (m.startsWith("[randfr")) {
-                mc.getMessage().reply(RandFr.randomFriend());
-            } else
-
-            if (m.startsWith("[inspiro")) {
-                mc.getMessage().reply(Inspiro.inspiro());
-            } else
-
-            if (m.startsWith("[godsays")) {
-                mc.getMessage().reply(Godsays.godSays());
-            } else
-
-            if (m.startsWith("[miat")) {
-                mc.getMessage().reply("https://github.com/balls99dotexe/images/blob/main/miatas/miata" + (int) Math.floor(1 + Math.random() * 13) + ".png?raw=true");
-            } else
-
-            if (m.toLowerCase().startsWith(".bestclient") || m.toLowerCase().startsWith("[bestclient") || m.toLowerCase().startsWith("!bestclient")) {
+            if (m.toLowerCase().startsWith(".bestclient") || m.toLowerCase().startsWith("!bestclient")) {
                 Color seppuku = new Color(153,0,238);
                 EmbedBuilder e = new EmbedBuilder()
                         .setTitle("Seppuku")
@@ -203,46 +148,6 @@ public class KbotMain {
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
-            } else
-
-            if (m.toLowerCase().contains("nigg")) {
-                mc.getChannel().sendMessage("__**come on get something original**__");
-            } else
-
-            if (m.contains("HAV0X")) {
-                int up = 1;
-                V0Xpoints.hV0Xpoints(mc, api, up);
-            } else
-
-            if (m.toLowerCase().contains("topi")) {
-                int up = 1;
-                V0Xpoints.hV0Xpoints(mc, api, up);
-            } else
-
-            if (m.toLowerCase().contains("grey")) {
-                int up = 1;
-                V0Xpoints.hV0Xpoints(mc, api, up);
-            } else
-
-            if (m.toLowerCase().contains("seppuku")) {
-                int up = 1;
-                V0Xpoints.hV0Xpoints(mc, api, up);
-            } else
-
-            if (m.toLowerCase().contains("havox")) {
-                int down = -1;
-                V0Xpoints.hV0Xpoints(mc, api, down);
-            } else
-
-            if (m.contains("havix")) {
-                int down = -1;
-                V0Xpoints.hV0Xpoints(mc, api, down);
-            } else
-
-            if (m.toLowerCase().contains("i like kotlin")) {
-                int down = -1;
-                V0Xpoints.hV0Xpoints(mc, api, down);
-
             }
         });
 
