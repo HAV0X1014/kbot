@@ -4,17 +4,21 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.activity.ActivityType;
 import org.javacord.api.entity.channel.Channel;
+import org.javacord.api.entity.emoji.Emoji;
 import org.javacord.api.entity.intent.Intent;
 import org.javacord.api.entity.message.MessageFlag;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.interaction.*;
 import org.kbot.FileHandlers.*;
+import org.kbot.FunFeatures.KpointChecker;
+import org.kbot.FunFeatures.Kpoints;
 import org.kbot.UtilityCommands.*;
 
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
@@ -38,11 +42,12 @@ public class KbotMain {
         //SlashCommand.with("pfp","Get the avatar of a member.", Arrays.asList(SlashCommandOption.create(SlashCommandOptionType.USER, "User","The user's PFP you want.", false))).createGlobal(api).join();
         //SlashCommand.with("serverinfo","Get info about the server.").createGlobal(api).join();
         //SlashCommand.with("setlogchannel","Set the deleted message log channel.", Arrays.asList(SlashCommandOption.create(SlashCommandOptionType.CHANNEL, "Channel", "The channel you want to log deleted messages to.", true))).createGlobal(api).join();
+        //SlashCommand.with("kpoints","Check your KiLAB points, the top overall, or another user's points.", Arrays.asList(SlashCommandOption.create(SlashCommandOptionType.USER, "user", "User to check.",false), SlashCommandOption.create(SlashCommandOptionType.BOOLEAN,"top","See the top 5 earners."))).createGlobal(api).join();
 
         //SlashCommand.with("future", "Future Config.").createGlobal(api).join();
 
         /*
-        String slashCommandID = "1094046846906802296";
+        String slashCommandID = "1094842827554426890";
             try {
                 api.getGlobalSlashCommandById(Long.parseLong(slashCommandID)).get().delete();
             } catch (InterruptedException e) {
@@ -50,16 +55,13 @@ public class KbotMain {
             } catch (ExecutionException e) {
                 throw new RuntimeException(e);
             }
-        */
+         */
 
 
         //slash commands
         api.addSlashCommandCreateListener(event -> {
 
             SlashCommandInteraction interaction = event.getSlashCommandInteraction();
-            if (interaction.getCommandName().equals("ping")) {
-                interaction.createImmediateResponder().setContent("Pong. Plain and simple.").setFlags(MessageFlag.EPHEMERAL).respond();
-            }
 
             if (interaction.getCommandName().equals("uptime")) {
                 interaction.createImmediateResponder().setContent(Uptime.uptime(startTime)).respond();
@@ -81,8 +83,16 @@ public class KbotMain {
                 interaction.createImmediateResponder().setContent("").addEmbed(ServerInfo.serverInfo(interaction, api)).respond();
             }
 
-            if (interaction.getCommandName().equals("setlogchannel")) {
-                interaction.createImmediateResponder().setContent(SetLogChannel.setlogchannel(interaction)).respond();
+            if (interaction.getCommandName().equals("kpoints")) {
+                if (interaction.getArgumentUserValueByIndex(0).isPresent()) {
+                    KpointChecker.user(interaction);
+                }
+                if (interaction.getArgumentBooleanValueByIndex(0).isPresent()) {
+                    KpointChecker.top(interaction);
+                }
+                if (!interaction.getOptionByIndex(0).isPresent()) {
+                    KpointChecker.pointCheck(interaction);
+                }
             }
 
             if (interaction.getCommandName().equals("future")) {
@@ -105,6 +115,24 @@ public class KbotMain {
                     }
                 }
             }
+
+            if (m.equals("KiLAB")) {
+                int up = 1;
+                Kpoints.kpoints(mc,api,up);
+                mc.addReactionsToMessage("upvote:827621627264892978");
+            } else
+
+            if (m.toLowerCase().contains("seppuku")) {
+                int up = 1;
+                Kpoints.kpoints(mc,api,up);
+                mc.addReactionsToMessage("HauseCool:827621626719764551");
+            } else
+
+            if (m.toLowerCase().contains("kilab")) {
+                int down = -1;
+                Kpoints.kpoints(mc,api,down);
+                mc.addReactionsToMessage("down:827621626974699572");
+            } else
 
             if (m.toLowerCase().startsWith(".bestclient") || m.toLowerCase().startsWith("!bestclient")) {
                 Color seppuku = new Color(153,0,238);
