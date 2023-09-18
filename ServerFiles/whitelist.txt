@@ -1,2 +1,0 @@
-
-//user IDs of members you want on the whitelist

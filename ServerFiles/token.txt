@@ -1,2 +1,0 @@
-
-//Your bot token goes on the first line. Only the first line is read.
