@@ -6,7 +6,7 @@ import org.javacord.api.event.message.MessageCreateEvent;
 import java.io.*;
 
 public class Kpoints {
-    public static void kpoints(MessageCreateEvent mc, DiscordApi api, int updown) {
+    public static void kpoints(MessageCreateEvent mc, int updown) {
         String userID = mc.getMessageAuthor().getIdAsString();
         File file = new File("KpointScores/"+ userID + ".txt");
         int score = 0;

@@ -11,12 +11,8 @@ public class CheckPermission {
     public static boolean checkPermission(SlashCommandInteraction interaction, PermissionType permcheck) {
         boolean hasPerm = interaction.getServer().get().hasPermission(interaction.getUser(), permcheck);
 
-        try {
-            if (Whitelist.whitelisted(interaction.getUser().getIdAsString())) {
-                hasPerm = true;
-            }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+        if (Whitelist.whitelisted(interaction.getUser().getIdAsString())) {
+            hasPerm = true;
         }
 
         return hasPerm;
