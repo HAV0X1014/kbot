@@ -1,0 +1,19 @@
+{
+  "Config": {
+    "Token": "",
+    "BotName": "K-Bot",
+    "Prefix": ".",
+    "RegisterSlashCommands": false,
+
+    "Whitelist": ["","","",""],
+    "WebhookURL": "",
+    "StatusText": "sub(mit) to KiLAB.",
+
+    "ReWordsGoodWords": ["seppuku"],
+    "ReWordsGoodWordsExactMatch": ["KiLAB"],
+    "ReWordsGoodWordsEmoji": "upvote:827621627264892978",
+    "ReWordsBadWords": [],
+    "ReWordsBadWordsExactMatch": [],
+    "ReWordsBadWordsEmoji": "down:827621626974699572"
+  }
+}
